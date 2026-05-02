@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Adil Boulemaiz — Telecom Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#050a10;--surface:#0c1420;--border:#1a2d45;
+    --accent:#00d4ff;--accent2:#0066ff;--accent3:#00ff88;
+    --text:#e8f4ff;--muted:#5a7a99;--glow:rgba(0,212,255,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none;}
+  .cursor{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:screen;}
+  .cursor-ring{width:34px;height:34px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.15s;opacity:0.5;}
+  .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);border-bottom:1px solid var(--border);background:rgba(5,10,16,0.75);}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;}
+  .nav-links{display:flex;gap:28px;list-style:none;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .status-dot{display:flex;align-items:center;gap:8px;font-size:0.68rem;color:var(--accent3);letter-spacing:0.1em;}
+  .dot{width:7px;height:7px;background:var(--accent3);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,0.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(0,255,136,0)}}
+  section{position:relative;z-index:1;}
+  .sw{padding:96px 48px;max-width:1300px;margin:0 auto;}
+  .sl{font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:48px;display:flex;align-items:center;gap:16px;}
+  .sl::after{content:'';flex:1;max-width:80px;height:1px;background:var(--accent);opacity:0.4;}
+  /* HERO */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;max-width:1300px;margin:0 auto;position:relative;}
+  .hero-tag{font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:24px;opacity:0;animation:fadeUp 0.8s ease forwards 0.2s;}
+  .hero-name{font-family:'Syne',sans-serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:800;line-height:0.92;letter-spacing:-0.02em;margin-bottom:12px;opacity:0;animation:fadeUp 0.8s ease forwards 0.4s;}
+  .hero-name span{display:block;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero-sub{font-family:'Syne',sans-serif;font-size:clamp(1rem,2vw,1.3rem);font-weight:600;color:var(--muted);margin-bottom:32px;letter-spacing:0.05em;opacity:0;animation:fadeUp 0.8s ease forwards 0.6s;}
+  .hero-desc{max-width:500px;font-size:0.85rem;color:var(--muted);line-height:1.9;margin-bottom:40px;opacity:0;animation:fadeUp 0.8s ease forwards 0.8s;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s ease forwards 1s;}
+  .hero-signal{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:400px;opacity:0;animation:fadeIn 1.2s ease forwards 1.2s;}
+  @media(max-width:1000px){.hero-signal{display:none;}}
+  .btn-p{padding:13px 30px;background:var(--accent);color:var(--bg);font-family:'DM Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);}
+  .btn-p:hover{background:#fff;transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,212,255,0.3);}
+  .btn-s{padding:13px 30px;background:transparent;color:var(--text);font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border:1px solid var(--border);transition:all 0.2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);}
+  .btn-s:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+  /* ABOUT */
+  .ag{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:start;}
+  @media(max-width:768px){.ag{grid-template-columns:1fr;}.nav-links{display:none;}.sw,.hero-cta{padding-left:20px!important;padding-right:20px!important;}#hero{padding-left:20px;padding-right:20px;}.hero-name{font-size:3.5rem;}nav{padding:16px 20px;}.contact-inner{padding:32px 24px;}footer{padding:20px;flex-direction:column;gap:8px;text-align:center;}}
+  .at{font-size:0.87rem;color:var(--muted);line-height:2;}
+  .at p+p{margin-top:18px;}
+  .hl{color:var(--text);font-weight:500;}
+  .ast{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .sc{background:var(--surface);border:1px solid var(--border);padding:26px 22px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+  .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);}
+  .sc:hover{border-color:var(--accent);transform:translateY(-4px);}
+  .sn{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:6px;}
+  .slb{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+  .eb{background:var(--surface);border:1px solid var(--border);padding:26px 28px;margin-top:28px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+  .eb::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--accent));}
+  .eb:hover{border-color:var(--accent);}
+  .ed{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:5px;}
+  .es{font-size:0.78rem;color:var(--muted);margin-bottom:4px;}
+  .ey{font-size:0.7rem;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;}
+  .eg{font-size:0.7rem;color:var(--accent3);margin-top:4px;}
+  .lr{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+  .lc{padding:9px 18px;border:1px solid var(--border);font-size:0.73rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;transition:all 0.2s;position:relative;overflow:hidden;}
+  .lc::before{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.25s ease;z-index:-1;}
+  .lc:hover{color:var(--bg);border-color:var(--accent);}
+  .lc:hover::before{transform:scaleX(1);}
+  /* PROJECTS */
+  .pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;}
+  .pc{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color 0.2s,transform 0.2s;position:relative;}
+  .pc:hover{border-color:var(--accent);transform:translateY(-6px);}
+  .pp{height:195px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .fp{background:linear-gradient(135deg,#1a0500,#0d0100);}
+  .gp{background:linear-gradient(135deg,#00071a,#00112e);}
+  .mb{width:82%;background:#111;border-radius:6px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+  .mbar{height:22px;background:#1a1a1a;display:flex;align-items:center;padding:0 8px;gap:4px;}
+  .md{width:6px;height:6px;border-radius:50%;}
+  .mbody{padding:12px;font-size:0.65rem;color:var(--muted);}
+  .mt1{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:#ff5e14;margin-bottom:3px;}
+  .mt2{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--accent);margin-bottom:3px;}
+  .msb{font-size:0.58rem;color:#555;margin-bottom:7px;}
+  .mi{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1a1a1a;font-size:0.6rem;color:#888;}
+  .mp{color:#ff5e14;}
+  .mr{display:flex;justify-content:space-between;margin:3px 0;color:#888;font-size:0.6rem;}
+  .mres{color:var(--accent);font-weight:500;border-top:1px solid #1a2d45;padding-top:4px;margin-top:4px;font-size:0.6rem;display:flex;justify-content:space-between;}
+  .pov{position:absolute;inset:0;background:rgba(0,212,255,0.06);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;font-size:0.75rem;color:var(--accent);letter-spacing:0.1em;}
+  .pc:hover .pov{opacity:1;}
+  .pb{padding:28px;}
+  .pm{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .tag{padding:4px 10px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);font-size:0.63rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;}
+  .pt{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:9px;}
+  .pdesc{font-size:0.79rem;color:var(--muted);line-height:1.7;margin-bottom:18px;}
+  .pf{list-style:none;margin-bottom:20px;display:flex;flex-direction:column;gap:6px;}
+  .pf li{font-size:0.76rem;color:var(--muted);display:flex;gap:8px;line-height:1.5;}
+  .pf li::before{content:'▸';color:var(--accent);flex-shrink:0;}
+  .pl{display:inline-flex;align-items:center;gap:8px;font-size:0.72rem;color:var(--accent);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(0,212,255,0.3);padding:9px 18px;transition:all 0.2s;}
+  .pl:hover{background:var(--accent);color:var(--bg);}
+  /* SKILLS */
+  .skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;}
+  .skcat{background:var(--surface);border:1px solid var(--border);padding:28px;transition:border-color 0.2s,transform 0.2s;position:relative;overflow:hidden;}
+  .skcat::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at bottom left,var(--glow),transparent 70%);opacity:0;transition:opacity 0.3s;pointer-events:none;}
+  .skcat:hover{border-color:var(--accent);transform:translateY(-4px);}
+  .skcat:hover::after{opacity:1;}
+  .sktit{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+  .skl{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .skl li{font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:10px;transition:color 0.2s;}
+  .skl li:hover{color:var(--text);}
+  .skl li::before{content:'▸';color:var(--accent);font-size:0.68rem;flex-shrink:0;}
+  /* TIMELINE */
+  .tl{position:relative;padding-left:24px;}
+  .tl::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),transparent);}
+  .ti{position:relative;margin-bottom:52px;padding-left:28px;}
+  .ti::before{content:'';position:absolute;left:-4px;top:6px;width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);}
+  .td{font-size:0.7rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;}
+  .tr{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .tc{font-size:0.8rem;color:var(--muted);margin-bottom:14px;}
+  .tdet{list-style:none;display:flex;flex-direction:column;gap:7px;}
+  .tdet li{font-size:0.8rem;color:var(--muted);display:flex;gap:10px;line-height:1.6;}
+  .tdet li::before{content:'→';color:var(--accent);flex-shrink:0;}
+  /* CERTS */
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .cc{background:var(--surface);border:1px solid var(--border);padding:20px 22px;display:flex;gap:14px;align-items:flex-start;transition:border-color 0.2s,transform 0.2s;}
+  .cc:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .ci{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+  .cn{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4;}
+  .cdate{font-size:0.68rem;color:var(--accent);letter-spacing:0.1em;}
+  /* CONTACT */
+  .cinner{background:var(--surface);border:1px solid var(--border);padding:60px;position:relative;overflow:hidden;}
+  .cinner::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at top right,rgba(0,102,255,0.07),transparent 60%);pointer-events:none;}
+  .ch{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:18px;}
+  .ch span{color:var(--accent);}
+  .csub{color:var(--muted);font-size:0.85rem;line-height:1.8;max-width:480px;margin-bottom:36px;}
+  .clinks{display:flex;gap:14px;flex-wrap:wrap;}
+  .clink{display:inline-flex;align-items:center;gap:10px;font-size:0.73rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:12px 20px;transition:all 0.2s;}
+  .clink:hover{color:var(--accent);border-color:var(--accent);}
+  footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+  .ft{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;}
+  .fr{font-size:0.7rem;color:var(--muted);}
+  .fr span{color:var(--accent);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="nav-logo">A.Boulemaiz</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="status-dot"><span class="dot"></span>Available for hire</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div>
+    <p class="hero-tag">// Telecom Engineer · Jijel, Algeria · github.com/odilbz</p>
+    <h1 class="hero-name">Adil<br/><span>Boulemaiz</span></h1>
+    <p class="hero-sub">Telecommunications & Web Engineering</p>
+    <p class="hero-desc">Telecom Engineering graduate specialized in network operations, fiber infrastructure, and full-stack web development. I build signal networks and digital products — from VoIP systems to Flask web apps.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-p">View Projects</a>
+      <a href="#contact" class="btn-s">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-signal">
+    <svg viewBox="0 0 420 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00d4ff" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#00d4ff"/>
+          <stop offset="100%" stop-color="#0066ff" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="gw"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g filter="url(#gw)">
+        <path d="M0 160 Q30 100 60 160 Q90 220 120 160 Q150 100 180 160 Q210 220 240 160 Q270 100 300 160 Q330 220 360 160 Q390 100 420 160" stroke="url(#lg1)" stroke-width="2" fill="none"><animate attributeName="stroke-dasharray" from="0 1000" to="1000 0" dur="2s" repeatCount="indefinite"/></path>
+        <path d="M0 160 Q30 130 60 160 Q90 190 120 160 Q150 130 180 160 Q210 190 240 160 Q270 130 300 160 Q330 190 360 160 Q390 130 420 160" stroke="#0066ff" stroke-width="1" fill="none" opacity="0.5"><animate attributeName="stroke-dasharray" from="0 1000" to="1000 0" dur="2.5s" repeatCount="indefinite"/></path>
+        <path d="M0 160 Q30 75 60 160 Q90 245 120 160 Q150 75 180 160 Q210 245 240 160 Q270 75 300 160 Q330 245 360 160 Q390 75 420 160" stroke="#00ff88" stroke-width="1.5" fill="none" opacity="0.25"><animate attributeName="stroke-dasharray" from="0 1000" to="1000 0" dur="3s" repeatCount="indefinite"/></path>
+      </g>
+      <line x1="0" y1="60" x2="420" y2="60" stroke="#1a2d45" stroke-width="1"/>
+      <line x1="0" y1="260" x2="420" y2="260" stroke="#1a2d45" stroke-width="1"/>
+      <text x="4" y="56" fill="#5a7a99" font-size="10" font-family="monospace">+A</text>
+      <text x="4" y="275" fill="#5a7a99" font-size="10" font-family="monospace">-A</text>
+      <line x1="105" y1="40" x2="105" y2="280" stroke="#1a2d45" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="210" y1="40" x2="210" y2="280" stroke="#1a2d45" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="315" y1="40" x2="315" y2="280" stroke="#1a2d45" stroke-width="1" stroke-dasharray="4,4"/>
+      <text x="95" y="295" fill="#5a7a99" font-size="9" font-family="monospace">f₁</text>
+      <text x="200" y="295" fill="#5a7a99" font-size="9" font-family="monospace">f₂</text>
+      <text x="305" y="295" fill="#5a7a99" font-size="9" font-family="monospace">f₃</text>
+      <circle cx="210" cy="160" r="5" fill="#00d4ff"><animate attributeName="opacity" values="1;0;1" dur="1.5s" repeatCount="indefinite"/><animate attributeName="r" values="5;9;5" dur="1.5s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about"><div class="sw">
+  <div class="sl reveal">01 — About</div>
+  <div class="ag">
+    <div>
+      <div class="at reveal">
+        <p>I'm <span class="hl">Adil Boulemaiz</span>, a Telecommunications Engineering graduate from the <span class="hl">University of May 8, 1945, Guelma</span>. My background spans both telecom infrastructure and full-stack web development.</p>
+        <p>During my internship at <span class="hl">Algeria Telecom (Systel), Jijel</span>, I installed and configured core network equipment, deployed VoIP &amp; FTTH services, and troubleshot real telecom systems.</p>
+        <p>Beyond telecom, I build real-world web applications using <span class="hl">Python / Flask</span> — including a restaurant ordering platform with Telegram integration and an Algerian LMD GPA calculator.</p>
+      </div>
+      <div class="eb reveal">
+        <div class="ed">B.Sc. Telecommunications Engineering</div>
+        <div class="es">University of May 8, 1945 · Guelma, Algeria</div>
+        <div class="ey">2025</div>
+        <div class="eg">Grade: 10.17 / 20</div>
+      </div>
+      <div class="lr reveal">
+        <div class="lc">عربية</div>
+        <div class="lc">Français</div>
+        <div class="lc">English</div>
+      </div>
+    </div>
+    <div class="ast reveal">
+      <div class="sc"><div class="sn">2</div><div class="slb">Work Experiences</div></div>
+      <div class="sc"><div class="sn">5+</div><div class="slb">Certificates</div></div>
+      <div class="sc"><div class="sn">4</div><div class="slb">GitHub Repos</div></div>
+      <div class="sc"><div class="sn">3</div><div class="slb">Languages</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- PROJECTS -->
+<section id="projects"><div class="sw">
+  <div class="sl reveal">02 — Projects</div>
+  <div class="pg">
+
+    <!-- FlameGrill -->
+    <div class="pc reveal">
+      <div class="pp fp">
+        <div class="mb">
+          <div class="mbar">
+            <div class="md" style="background:#ff5555"></div>
+            <div class="md" style="background:#ffaa00"></div>
+            <div class="md" style="background:#00cc44"></div>
+          </div>
+          <div class="mbody">
+            <div class="mt1">🔥 FlameGrill</div>
+            <div class="msb">Fast Food Ordering · Flask + Telegram Bot</div>
+            <div class="mi"><span>🍔 Burger Classic</span><span class="mp">350 DA</span></div>
+            <div class="mi"><span>🍟 Frites XL</span><span class="mp">150 DA</span></div>
+            <div class="mi"><span>🥤 Coca-Cola</span><span class="mp">100 DA</span></div>
+            <div style="margin-top:8px;font-size:0.6rem;color:#ff5e14">🛒 Cart: 3 items · 600 DA →</div>
+          </div>
+        </div>
+        <div class="pov">◈ View on GitHub</div>
+      </div>
+      <div class="pb">
+        <div class="pm">
+          <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">HTML/CSS</span><span class="tag">Telegram API</span>
+        </div>
+        <div class="pt">FlameGrill — Restaurant Ordering Platform</div>
+        <div class="pdesc">A fully configurable restaurant web app with session-based cart, real-time Telegram order notifications, and a dynamic menu system — all customizable through a single config file.</div>
+        <ul class="pf">
+          <li>Session-based shopping cart with quantity management</li>
+          <li>Telegram Bot integration: instant order alerts to the restaurant owner</li>
+          <li>100% configurable: name, colors, menu, slogan via config.py</li>
+          <li>Multi-page Flask app: Home, Menu, Cart — fully responsive</li>
+        </ul>
+        <a href="https://github.com/odilbz" target="_blank" class="pl">◈ github.com/odilbz</a>
+      </div>
+    </div>
+
+    <!-- GPA Calculator -->
+    <div class="pc reveal">
+      <div class="pp gp">
+        <div class="mb">
+          <div class="mbar">
+            <div class="md" style="background:#ff5555"></div>
+            <div class="md" style="background:#ffaa00"></div>
+            <div class="md" style="background:#00cc44"></div>
+          </div>
+          <div class="mbody">
+            <div class="mt2">📊 GPA Calculator — LMD</div>
+            <div class="msb">Algerian University System</div>
+            <div class="mr"><span>Module: Telecom · Coef: 3</span></div>
+            <div class="mr"><span>Exam: 13.5 / TD: 14</span><span style="color:#00d4ff">→ 13.7</span></div>
+            <div class="mr"><span>Module: Maths · Coef: 2</span></div>
+            <div class="mr"><span>Exam: 11.0 / TD: 12</span><span style="color:#00d4ff">→ 11.4</span></div>
+            <div class="mres"><span>Moyenne Semestre</span><span>12.82 / 20</span></div>
+          </div>
+        </div>
+        <div class="pov">◈ View on GitHub</div>
+      </div>
+      <div class="pb">
+        <div class="pm">
+          <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">JavaScript</span><span class="tag">CSS</span>
+        </div>
+        <div class="pt">GPA Calculator — Algerian LMD System</div>
+        <div class="pdesc">A web-based GPA calculator built specifically for Algeria's LMD university system, implementing the exact official formula with configurable Exam/TD weightings and coefficient-based semester averages.</div>
+        <ul class="pf">
+          <li>Official Algerian LMD formula: Σ(Module × Coef) / ΣCoef</li>
+          <li>Dynamic module input with customizable Exam/TD percentages</li>
+          <li>Flask backend + JavaScript for real-time calculation</li>
+          <li>Student-focused UI for everyday academic use</li>
+        </ul>
+        <a href="https://github.com/odilbz" target="_blank" class="pl">◈ github.com/odilbz</a>
+      </div>
+    </div>
+
+  </div>
+</div></section>
+
+<!-- SKILLS -->
+<section id="skills"><div class="sw">
+  <div class="sl reveal">03 — Skills & Technologies</div>
+  <div class="skgrid">
+    <div class="skcat reveal">
+      <div class="sktit">📡 Telecom & Networks</div>
+      <ul class="skl">
+        <li>NGN / MSAN Architecture</li>
+        <li>xDSL · FTTH · Fiber Optic</li>
+        <li>VoIP · Core Network Systems</li>
+        <li>Mobile Networks (LTE / 5G)</li>
+        <li>Atoll Network Planning Tool</li>
+        <li>TCP/IP · Troubleshooting</li>
+      </ul>
+    </div>
+    <div class="skcat reveal">
+      <div class="sktit">💻 Programming & Web</div>
+      <ul class="skl">
+        <li>Python (Flask, Automation)</li>
+        <li>JavaScript (ES6+)</li>
+        <li>HTML5 · CSS3</li>
+        <li>MATLAB / SIMULINK</li>
+        <li>Arduino / Embedded Systems</li>
+        <li>Assembleur emu8086</li>
+      </ul>
+    </div>
+    <div class="skcat reveal">
+      <div class="sktit">🛠️ Tools & Productivity</div>
+      <ul class="skl">
+        <li>Microsoft Office Suite</li>
+        <li>Excel (PivotTables, Formulas)</li>
+        <li>Canva · Graphic Design</li>
+        <li>Git · GitHub</li>
+        <li>Telegram Bot API</li>
+        <li>Document & Admin Management</li>
+      </ul>
+    </div>
+    <div class="skcat reveal">
+      <div class="sktit">🤝 Professional</div>
+      <ul class="skl">
+        <li>Network Equipment Configuration</li>
+        <li>Technical Troubleshooting</li>
+        <li>Team Collaboration</li>
+        <li>Report & Documentation Writing</li>
+        <li>Online Registrations & Platforms</li>
+        <li>Multilingual: Arabic / French / English</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- EXPERIENCE -->
+<section id="experience"><div class="sw">
+  <div class="sl reveal">04 — Experience & Education</div>
+  <div class="tl">
+    <div class="ti reveal">
+      <div class="td">Jun 2025 — Dec 2025</div>
+      <div class="tr">Administrative Secretary</div>
+      <div class="tc">Business Office HMZ · Algeria</div>
+      <ul class="tdet">
+        <li>Managed all administrative tasks, correspondence, and document processing</li>
+        <li>Advanced Microsoft Office: Word, Excel (PivotTables &amp; formulas), PowerPoint</li>
+        <li>Handled online registrations and submissions on government/international platforms</li>
+        <li>Coordinated emails, calls, and scheduling with high attention to detail</li>
+      </ul>
+    </div>
+    <div class="ti reveal">
+      <div class="td">Dec 2024 — Jan 2025 · Internship</div>
+      <div class="tr">Telecom Engineering Intern</div>
+      <div class="tc">Algeria Telecom (Systel) · Jijel, Algeria</div>
+      <ul class="tdet">
+        <li>Hands-on work with core network, fiber optic, and mobile systems</li>
+        <li>Installed, configured, and troubleshot network equipment on-site</li>
+        <li>Diagnosed and fixed technical issues to reduce downtime</li>
+        <li>Assisted in VoIP and FTTH deployment and technology upgrades</li>
+        <li>Collaborated with teams to optimize processes and documentation</li>
+      </ul>
+    </div>
+    <div class="ti reveal">
+      <div class="td">2019 — 2025</div>
+      <div class="tr">B.Sc. Telecommunications Engineering</div>
+      <div class="tc">University of May 8, 1945 · Guelma, Algeria</div>
+      <ul class="tdet">
+        <li>Signal Processing, Optical Networks, Mobile Communications, Microwave Systems</li>
+        <li>MATLAB/SIMULINK simulation projects and Atoll mobile planning software</li>
+        <li>Final grade: 10.17 / 20</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="sl reveal" style="margin-top:72px">05 — Certificates</div>
+  <div class="cgrid">
+    <div class="cc reveal"><div class="ci">🐍</div><div><div class="cn">Python Essentials</div><div class="cdate">Cisco Networking Academy · Jan 2025</div></div></div>
+    <div class="cc reveal"><div class="ci">🔬</div><div><div class="cn">Scientific Computing with Python</div><div class="cdate">FreeCodeCamp · Jan 2026</div></div></div>
+    <div class="cc reveal"><div class="ci">🌐</div><div><div class="cn">Complete JavaScript with HTML5 &amp; CSS3</div><div class="cdate">Zero to Expert · Jul 2024</div></div></div>
+    <div class="cc reveal"><div class="ci">🎨</div><div><div class="cn">Essential Canva Course for Graphic Design</div><div class="cdate">Aug 2024</div></div></div>
+    <div class="cc reveal"><div class="ci">📊</div><div><div class="cn">MATLAB/SIMULINK Bible — Zero to Hero</div><div class="cdate">Aug 2024</div></div></div>
+  </div>
+</div></section>
+
+<!-- CONTACT -->
+<section id="contact"><div class="sw">
+  <div class="sl reveal">06 — Contact</div>
+  <div class="cinner reveal">
+    <h2 class="ch">Let's build<br/>something <span>great</span>.</h2>
+    <p class="csub">Open to telecom engineering roles, web development projects, and postgraduate opportunities. Based in Jijel, Algeria — available for remote or relocation.</p>
+    <div class="clinks">
+      <a class="clink" href="mailto:adilboulemaiz@gmail.com">✉ adilboulemaiz@gmail.com</a>
+      <a class="clink" href="https://www.linkedin.com/in/adil-boulemaiz-5aa9572b6" target="_blank">⬡ LinkedIn</a>
+      <a class="clink" href="https://github.com/odilbz" target="_blank">◈ github.com/odilbz</a>
+      <a class="clink" href="tel:+213676567947">✆ +213 676 567 947</a>
+    </div>
+  </div>
+</div></section>
+
+<footer>
+  <p class="ft">© 2025 Adil Boulemaiz · Jijel, Algeria</p>
+  <p class="fr">Telecom Engineer <span>·</span> Web Developer <span>·</span> Open to Opportunities</p>
+</footer>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-5+'px';cursor.style.top=my-5+'px';});
+  (function a(){rx+=(mx-rx-17)*0.12;ry+=(my-ry-17)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(a);})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.transform='scale(1.5)';});
+    el.addEventListener('mouseleave',()=>{cursor.style.transform='';ring.style.transform='';});
+  });
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>
